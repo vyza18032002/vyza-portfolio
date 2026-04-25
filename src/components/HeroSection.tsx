@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import profilePhoto from "@/assets/profile-photo.jpg";
+import SpiderWeb from "./SpiderWeb";
 
 const roles = ["Machine Learning Engineer", "NLP Specialist", "Python Developer", "Data Scientist"];
 
@@ -31,13 +32,26 @@ const HeroSection = () => {
   }, [displayed, deleting, roleIdx]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden spider-web-pattern">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-primary/3 rounded-full blur-3xl animate-float" style={{ animationDelay: "-2s" }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-primary/5 rounded-full animate-spin-slow" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-primary/3 rounded-full animate-spin-slow" style={{ animationDirection: "reverse" }} />
+        <SpiderWeb />
+        {/* Spider-themed background elements */}
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-red-500/5 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-3xl animate-float" style={{ animationDelay: "-2s" }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-red-500/10 rounded-full animate-spin-slow" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-blue-500/5 rounded-full animate-spin-slow" style={{ animationDirection: "reverse" }} />
+
+        {/* Spider web pattern overlay */}
+        <div className="absolute inset-0 opacity-5">
+          <svg width="100%" height="100%" viewBox="0 0 1000 1000" className="absolute inset-0">
+            {/* Large concentric circles */}
+            <circle cx="500" cy="500" r="400" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3"/>
+            <circle cx="500" cy="500" r="300" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3"/>
+            <circle cx="500" cy="500" r="200" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3"/>
+            <circle cx="500" cy="500" r="100" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.3"/>
+          </svg>
+        </div>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">

@@ -60,7 +60,7 @@ const ExperienceSection = () => {
                 {/* Timeline dot */}
                 <div className="absolute left-2.5 md:left-4.5 top-2 w-3 h-3 rounded-full bg-primary border-2 border-background" />
 
-                <div className="card-glass-hover rounded-2xl p-6 md:p-8">
+                <div className="card-spider-hover rounded-2xl p-6 md:p-8">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                     <div>
                       <h3 className="text-lg font-semibold text-foreground">{exp.role}</h3>

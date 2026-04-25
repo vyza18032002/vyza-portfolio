@@ -39,7 +39,7 @@ const ContactSection = () => {
         </div>
 
         <div className={`max-w-2xl mx-auto reveal ${isVisible ? "visible" : ""} reveal-delay-1`}>
-          <div className="card-glass-hover rounded-2xl p-8 md:p-12">
+          <div className="card-spider-hover rounded-2xl p-8 md:p-12">
             <div className="space-y-3 mb-10">
               {contactItems.map((item) => (
                 <a

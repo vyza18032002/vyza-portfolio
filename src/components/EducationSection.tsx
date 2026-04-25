@@ -19,7 +19,7 @@ const EducationSection = () => {
           </h2>
         </div>
         <div className="max-w-3xl mx-auto grid md:grid-cols-2 gap-6">
-          <div className={`card-glass-hover rounded-2xl p-6 md:p-8 reveal ${isVisible ? "visible" : ""} reveal-delay-1`}>
+          <div className={`card-spider-hover rounded-2xl p-6 md:p-8 reveal ${isVisible ? "visible" : ""} reveal-delay-1`}>
             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-primary">
                 <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
@@ -35,7 +35,7 @@ const EducationSection = () => {
             </div>
           </div>
 
-          <div className={`card-glass-hover rounded-2xl p-6 md:p-8 reveal ${isVisible ? "visible" : ""} reveal-delay-2`}>
+          <div className={`card-spider-hover rounded-2xl p-6 md:p-8 reveal ${isVisible ? "visible" : ""} reveal-delay-2`}>
             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-primary">
                 <circle cx="12" cy="8" r="6" />

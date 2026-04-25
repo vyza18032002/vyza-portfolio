@@ -22,7 +22,7 @@ const AboutSection = () => {
 
         <div className="max-w-4xl mx-auto grid md:grid-cols-5 gap-8">
           <div className={`md:col-span-3 reveal ${isVisible ? "visible" : ""} reveal-delay-1`}>
-            <div className="card-glass rounded-2xl p-8">
+            <div className="card-spider rounded-2xl p-8">
               <p className="text-secondary-foreground leading-relaxed mb-5">
                 Machine Learning Engineer with a strong foundation in <span className="text-foreground font-medium">Python, SQL, and applied ML</span>. Experienced in building
                 end-to-end ML solutions including data preprocessing, model development, and deployment-ready pipelines.
@@ -44,7 +44,7 @@ const AboutSection = () => {
           <div className={`md:col-span-2 reveal ${isVisible ? "visible" : ""} reveal-delay-2`}>
             <div className="grid grid-cols-2 gap-4 h-full">
               {stats.map((stat) => (
-                <div key={stat.label} className="card-glass-hover rounded-2xl p-5 flex flex-col items-center justify-center text-center">
+                <div key={stat.label} className="card-spider-hover rounded-2xl p-5 flex flex-col items-center justify-center text-center">
                   <p className="text-2xl md:text-3xl font-bold text-gradient mb-1">{stat.number}</p>
                   <p className="text-muted-foreground text-xs font-mono">{stat.label}</p>
                 </div>

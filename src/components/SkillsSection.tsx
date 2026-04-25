@@ -37,7 +37,7 @@ const SkillsSection = () => {
         </div>
         <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {skillCategories.map((cat, i) => (
-            <div key={cat.title} className={`card-glass-hover rounded-2xl p-6 reveal ${isVisible ? "visible" : ""} reveal-delay-${i + 1}`}>
+            <div key={cat.title} className={`card-spider-hover rounded-2xl p-6 reveal ${isVisible ? "visible" : ""} reveal-delay-${i + 1}`}>
               <div className="flex items-center gap-3 mb-5">
                 <span className="text-2xl">{cat.icon}</span>
                 <h3 className="text-foreground font-semibold">{cat.title}</h3>

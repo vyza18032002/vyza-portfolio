@@ -7,9 +7,11 @@ import ProjectsSection from "@/components/ProjectsSection";
 import EducationSection from "@/components/EducationSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import ScrollSpiderMan from "@/components/ScrollSpiderMan";
 
 const Index = () => (
-  <div className="min-h-screen bg-background">
+  <div className="min-h-screen bg-background spider-web-pattern">
+    <ScrollSpiderMan />
     <Navbar />
     <HeroSection />
     <AboutSection />
