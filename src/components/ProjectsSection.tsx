@@ -2,6 +2,12 @@ import useScrollReveal from "@/hooks/useScrollReveal";
 
 const projects = [
   {
+    title: "AI Chart Bot",
+    desc: "Conversational data-analysis assistant that turns natural-language questions into clear visualizations, helping users explore datasets and uncover insights faster.",
+    tags: ["Python", "Generative AI", "Data Visualization", "LLM"],
+    color: "from-primary/10 to-primary/5",
+  },
+  {
     title: "Customer Churn Prediction",
     desc: "Built a predictive model using Logistic Regression & Random Forest achieving 82% accuracy to identify at-risk customers.",
     tags: ["Python", "Scikit-learn", "Pandas", "ML"],

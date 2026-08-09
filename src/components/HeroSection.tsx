@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import profilePhoto from "@/assets/profile-photo.jpg";
 import SpiderWeb from "./SpiderWeb";
 
-const roles = ["Machine Learning Engineer", "NLP Specialist", "Python Developer", "Data Scientist"];
+const roles = ["AI/ML Engineer", "Machine Learning Engineer", "LLM Evaluator", "Data Analyst"];
 
 const HeroSection = () => {
   const [roleIdx, setRoleIdx] = useState(0);
@@ -32,7 +32,7 @@ const HeroSection = () => {
   }, [displayed, deleting, roleIdx]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden spider-web-pattern">
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden spider-web-pattern">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
         <SpiderWeb />
@@ -79,8 +79,8 @@ const HeroSection = () => {
             </div>
 
             <p className="text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed text-sm md:text-base animate-slide-in-left" style={{ animationDelay: "0.4s", opacity: 0 }}>
-              Building end-to-end ML solutions with Python, NLP, and scalable data systems.
-              Passionate about turning data into intelligent, deployment-ready products.
+              Improving AI through model evaluation, reliable datasets, and data-driven machine learning workflows.
+              Working with Python, SQL, LLM evaluation, and data analytics.
             </p>
 
             <div className="flex gap-4 justify-center lg:justify-start flex-wrap animate-slide-in-left" style={{ animationDelay: "0.5s", opacity: 0 }}>

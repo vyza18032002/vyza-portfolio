@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/logo.png";
 
 const navLinks = [
   { label: "About", href: "#about" },
   { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
+  { label: "Lollipop AI", href: "#chart-bot" },
   { label: "Education", href: "#education" },
   { label: "Contact", href: "#contact" },
 ];
@@ -35,9 +35,7 @@ const Navbar = () => {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/90 backdrop-blur-xl border-b border-border/50 shadow-lg shadow-background/50" : ""}`}>
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
-        <a href="#" className="flex items-center gap-2">
-          <img src={logo} alt="Shiva Reddy Logo" className="h-10 w-auto" />
-        </a>
+        <a href="#" className="text-sm font-mono text-primary tracking-wider">VSKR</a>
         <div className="hidden md:flex items-center gap-1">
           {navLinks.map((l) => (
             <a

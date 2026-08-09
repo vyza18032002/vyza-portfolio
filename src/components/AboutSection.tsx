@@ -1,10 +1,10 @@
 import useScrollReveal from "@/hooks/useScrollReveal";
 
 const stats = [
-  { number: "4+", label: "Projects Built" },
-  { number: "3+", label: "Internships" },
-  { number: "3", label: "Certifications" },
-  { number: "82%", label: "Best ML Accuracy" },
+  { number: "2", label: "Professional Roles" },
+  { number: "AI/ML", label: "Career Focus" },
+  { number: "LLM", label: "Model Evaluation" },
+  { number: "Python", label: "Primary Language" },
 ];
 
 const AboutSection = () => {
@@ -24,15 +24,15 @@ const AboutSection = () => {
           <div className={`md:col-span-3 reveal ${isVisible ? "visible" : ""} reveal-delay-1`}>
             <div className="card-spider rounded-2xl p-8">
               <p className="text-secondary-foreground leading-relaxed mb-5">
-                Machine Learning Engineer with a strong foundation in <span className="text-foreground font-medium">Python, SQL, and applied ML</span>. Experienced in building
-                end-to-end ML solutions including data preprocessing, model development, and deployment-ready pipelines.
+                AI/ML Engineer with a strong foundation in <span className="text-foreground font-medium">machine learning, data analytics, Python, and SQL</span>.
+                Experienced in AI model evaluation, data preprocessing, dataset validation, and data quality assurance.
               </p>
               <p className="text-secondary-foreground leading-relaxed mb-5">
-                Skilled in <span className="text-foreground font-medium">NLP, predictive modeling, and scalable data systems</span>. Familiar with Docker and CI/CD workflows.
-                Seeking high-impact ML Engineer roles where I can contribute to building intelligent, data-driven products.
+                Skilled in analyzing <span className="text-foreground font-medium">structured and unstructured data</span> for LLM, NLP, and computer vision workflows.
+                I enjoy collaborating with engineering teams to improve AI model quality and build reliable, data-driven solutions.
               </p>
               <div className="flex flex-wrap gap-3 mt-6">
-                {["Python", "ML/AI", "NLP", "SQL", "Docker", "CI/CD"].map(tag => (
+                {["Python", "Machine Learning", "LLM Evaluation", "SQL", "Data Analytics", "Data Quality"].map(tag => (
                   <span key={tag} className="px-3 py-1 text-xs font-mono rounded-full border border-primary/20 text-primary bg-primary/5">
                     {tag}
                   </span>

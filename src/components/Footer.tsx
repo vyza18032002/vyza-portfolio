@@ -1,12 +1,8 @@
-import logo from "@/assets/logo.png";
-
 const Footer = () => (
   <footer className="py-10 border-t border-border/50">
     <div className="container mx-auto px-6">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-        <a href="#" className="flex items-center gap-2">
-          <img src={logo} alt="Shiva Reddy Logo" className="h-8 w-auto" />
-        </a>
+        <a href="#" className="text-sm font-mono text-primary tracking-wider">VSKR</a>
         <p className="text-muted-foreground text-sm">
           © {new Date().getFullYear()} Vyza Shiva Kumar Reddy. Crafted with ❤️
         </p>
