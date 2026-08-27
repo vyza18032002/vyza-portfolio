@@ -1,65 +1,344 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import useScrollReveal from "@/hooks/useScrollReveal";
 import profilePhoto from "@/assets/profile-photo.jpg";
 
-type AssistantAnswer = { title: string; text: string; action?: { label: string; href: string }; photo?: boolean };
-
-const suggestions = ["Who is Shiva?", "Show Shiva's photo", "What are Shiva's skills?", "Tell me about Shiva's experience", "Where is Shiva based?", "How can I contact Shiva?"];
-
-const getAnswer = (question: string): AssistantAnswer => {
-  const query = question.toLowerCase();
-  if (query.includes("photo") || query.includes("image") || query.includes("picture") || query.includes("look like")) return { title: "Shiva’s Profile Photo", text: "Here is Vyza Shiva Kumar Reddy, an AI/ML Engineer based in Hyderabad, Telangana.", photo: true, action: { label: "View Profile", href: "#home" } };
-  if (query.includes("summary") || query.includes("about") || query.includes("who is") || query.includes("who's")) return { title: "About Shiva", text: "Vyza Shiva Kumar Reddy is an AI/ML Engineer based in Hyderabad, Telangana. He has a strong foundation in machine learning, data analytics, Python, SQL, and generative AI. His work includes AI model evaluation, data preprocessing, dataset validation, and developing high-quality datasets for machine learning applications.", action: { label: "View About", href: "#about" } };
-  if (query.includes("skill") || query.includes("technology") || query.includes("tech stack")) return { title: "Technical Skills", text: "Shiva’s technical skills include Python and SQL; Scikit-learn, TensorFlow, PyTorch (Basics), regression, classification, clustering, model evaluation, and feature engineering. He also works with LLM evaluation, prompt engineering, Gemini API, AI model validation, Pandas, NumPy, Excel, Power BI, Tableau, MySQL, PostgreSQL, MongoDB, Git, GitHub, REST APIs, Jupyter Notebook, and VS Code.", action: { label: "View Skills", href: "#skills" } };
-  if (query.includes("experience") || query.includes("work") || query.includes("job") || query.includes("handshake") || query.includes("tao")) return { title: "Experience", text: "Shiva is a Contract / Freelance AI/ML Engineer at Handshake.ai (Aug 2026–Present), where he evaluates and improves AI model outputs, analyzes structured and unstructured data for LLM development, performs validation and preprocessing, and documents findings through Git-based workflows. Previously, he was a Junior Data Analyst at TAO Digital Solutions (Aug 2025–May 2026), preparing and validating datasets for AI, NLP, and computer vision projects.", action: { label: "View Experience", href: "#experience" } };
-  if (query.includes("project") || query.includes("built") || query.includes("portfolio")) return { title: "Projects", text: "Shiva has built projects including an AI Chart Bot, Customer Churn Prediction model, YouTube Summarizer using Gemini API, Malware Detection System, and an LMS Portal with AI-powered video analysis.", action: { label: "View Projects", href: "#projects" } };
-  if (query.includes("education") || query.includes("college") || query.includes("degree") || query.includes("study") || query.includes("cgpa")) return { title: "Education", text: "Shiva completed a B.Tech in Artificial Intelligence & Machine Learning from CMR Technical Campus (2020–2024), with a CGPA of 6.88.", action: { label: "View Education", href: "#education" } };
-  if (query.includes("competenc") || query.includes("strength") || query.includes("soft skill")) return { title: "Core Competencies", text: "Shiva’s core competencies are machine learning, data analytics, generative AI, problem solving, analytical thinking, team collaboration, and communication." };
-  if (query.includes("location") || query.includes("based") || query.includes("hyderabad") || query.includes("city")) return { title: "Location", text: "Shiva is based in Hyderabad, Telangana, India." };
-  if (query.includes("contact") || query.includes("phone") || query.includes("mobile") || query.includes("email") || query.includes("reach") || query.includes("hire")) return { title: "Contact Shiva", text: "You can contact Shiva by phone at +91 8187032002 or email at vyza.18@gmail.com. His GitHub is github.com/vyza182-2 and his portfolio is vyzareddy.in.", action: { label: "Contact Shiva", href: "#contact" } };
-  return { title: "Lollipop AI", text: "Vyza Shiva Kumar Reddy is an AI/ML Engineer based in Hyderabad, Telangana. Ask me about his profile photo, professional summary, technical skills, experience, projects, education, core competencies, location, or contact details." };
+type Message = {
+  id: string;
+  sender: "user" | "ai";
+  title?: string;
+  text: string;
+  timestamp: string;
+  action?: { label: string; href: string };
+  photo?: boolean;
+  tags?: string[];
 };
+
+const categoryPills = [
+  { label: "💡 Overview", query: "Tell me about Shiva's background" },
+  { label: "🧠 ML & Tech Stack", query: "What technical skills does Shiva have?" },
+  { label: "💼 Work Experience", query: "Explain Shiva's work experience" },
+  { label: "🚀 Projects", query: "Show me Shiva's top AI projects" },
+  { label: "🎓 Certifications", query: "What certifications does Shiva hold?" },
+  { label: "📸 Profile Photo", query: "Show Shiva's profile photo" },
+  { label: "📞 Contact & Resume", query: "How do I contact or hire Shiva?" },
+];
+
+const generateResponse = (question: string): Omit<Message, "id" | "sender" | "timestamp"> => {
+  const q = question.toLowerCase();
+  
+  if (q.includes("photo") || q.includes("image") || q.includes("picture") || q.includes("look like")) {
+    return {
+      title: "Shiva's Professional Profile",
+      text: "Here is Vyza Shiva Kumar Reddy. He is an ML Data Associate & AI/ML Engineer based in Hyderabad, India with 1 year of hands-on experience in machine learning, model output QA, and dataset validation.",
+      photo: true,
+      action: { label: "View Hero Section", href: "#home" },
+      tags: ["Hyderabad, India", "AI/ML Engineer", "1 Yr Exp"]
+    };
+  }
+
+  if (q.includes("summary") || q.includes("about") || q.includes("who is") || q.includes("who's") || q.includes("background") || q.includes("bio")) {
+    return {
+      title: "Professional Summary",
+      text: "Vyza Shiva Kumar Reddy is an ML Data Associate & AI/ML Engineer proficient in Machine Learning, Data Analytics, Python, SQL, and Generative AI. Experienced in AI model evaluation, data preprocessing, dataset validation, and developing robust datasets for machine learning applications.",
+      action: { label: "Explore Overview", href: "#about" },
+      tags: ["ML Data Associate", "Data Preprocessing", "Model QA"]
+    };
+  }
+
+  if (q.includes("skill") || q.includes("tech") || q.includes("stack") || q.includes("python") || q.includes("sql") || q.includes("language")) {
+    return {
+      title: "Technical Skills & Competencies",
+      text: "Shiva's technical stack includes:\n• Languages & Libraries: Python, SQL, Pandas, NumPy, Scikit-learn, TensorFlow, PyTorch\n• AI/ML Domain: Model Evaluation, Feature Engineering, Data Cleaning, Dataset Validation, NLP, Generative AI\n• LLM & Tools: LLM Evaluation, LangChain, STT/TTS, Git, GitHub, Jupyter Notebook, VS Code.",
+      action: { label: "View Technical Skills", href: "#skills" },
+      tags: ["Python", "SQL", "Scikit-learn", "Generative AI", "LangChain"]
+    };
+  }
+
+  if (q.includes("experience") || q.includes("work") || q.includes("job") || q.includes("career") || q.includes("role")) {
+    return {
+      title: "1 Year Work Experience Highlights",
+      text: "Shiva brings 1 year of core industry experience in AI/ML & Data Engineering:\n1. Model Output Quality: Evaluates and improves AI/ML model outputs following project guidelines.\n2. LLM Dataset Prep: Analyzes structured and unstructured data for Large Language Model (LLM) training.\n3. QA & Preprocessing: Performs validation, annotation, and data cleaning for NLP and Vision applications.\n4. Distributed Workflows: Collaborates with cross-functional engineering teams using Git.",
+      action: { label: "View Experience", href: "#experience" },
+      tags: ["Model Evaluation", "LLM Validation", "Git Workflows"]
+    };
+  }
+
+  if (q.includes("project") || q.includes("built") || q.includes("portfolio") || q.includes("app") || q.includes("summarizer")) {
+    return {
+      title: "Featured AI Projects",
+      text: "Shiva has engineered 3 major projects:\n1. 🎥 AI Video Summarizer: YouTube transcript processing, automated summarization, and LLM chat portal.\n2. 🎙️ AI Voice Calling Agent: Real-time conversational agent using STT, TTS, LangChain & LLMs.\n3. 🛡️ Android Malware Detection: Reverse-engineering APK analysis using ML classification models.",
+      action: { label: "View Featured Projects", href: "#projects" },
+      tags: ["AI Video Portal", "Voice Agent", "Malware Detection"]
+    };
+  }
+
+  if (q.includes("education") || q.includes("college") || q.includes("certif") || q.includes("degree") || q.includes("oracle") || q.includes("google")) {
+    return {
+      title: "Education & 5 Professional Certifications",
+      text: "Academic Background:\n• B.Tech in AI & ML from CMR Technical Campus (2020–2024, Grade: 6.88/10)\n\nCertifications:\n1. Oracle Cloud Infrastructure 2024 AI Foundations Associate\n2. Google Data Analytics Professional Certificate\n3. SQL for Data Analysis\n4. Python for Data Science & Machine Learning\n5. Git & GitHub Version Control",
+      action: { label: "View Certifications", href: "#education" },
+      tags: ["B.Tech AI/ML", "Oracle Cloud AI", "Google Certified"]
+    };
+  }
+
+  if (q.includes("contact") || q.includes("phone") || q.includes("email") || q.includes("hire") || q.includes("reach") || q.includes("resume")) {
+    return {
+      title: "Direct Contact Information",
+      text: "Reach out to Shiva directly:\n• Phone: +91 8187032002\n• Email: vyza.18@gmail.com\n• Location: Hyderabad, India\n• GitHub: github.com/vyza182-2\n• Portfolio: vyzareddy.in",
+      action: { label: "Get In Touch", href: "#contact" },
+      tags: ["+91 8187032002", "vyza.18@gmail.com", "Hyderabad"]
+    };
+  }
+
+  return {
+    title: "Lollipop AI Portfolio Knowledge Assistant",
+    text: "I am Shiva's custom AI Assistant trained on his portfolio. You can ask me about his technical skills, work experience, top projects, education, certifications, or how to contact him!",
+    tags: ["AI Assistant", "Portfolio Trained"]
+  };
+};
+
+const initialMessages: Message[] = [
+  {
+    id: "welcome-msg",
+    sender: "ai",
+    title: "🤖 Lollipop AI Assistant Active",
+    text: "Hello! I am Lollipop AI, Shiva's interactive portfolio assistant. Ask me anything about Shiva's 1-year ML experience, technical skills, Generative AI projects, or certifications!",
+    timestamp: "Just now",
+    tags: ["Online", "v2.5 Trained"]
+  }
+];
 
 const AIChartBotSection = () => {
   const { ref, isVisible } = useScrollReveal();
-  const [query, setQuery] = useState("");
-  const [answer, setAnswer] = useState<AssistantAnswer>({ title: "Welcome to Lollipop AI", text: "Hi! I’m Shiva’s portfolio assistant. Ask me anything about Shiva’s skills, experience, projects, or photo." });
-  const search = (question = query) => {
-    const cleanQuestion = question.trim();
-    if (cleanQuestion) setAnswer(getAnswer(cleanQuestion));
-    if (question !== query) setQuery(question);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [inputQuery, setInputQuery] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages, isTyping]);
+
+  const handleSend = (queryToSend = inputQuery) => {
+    const clean = queryToSend.trim();
+    if (!clean || isTyping) return;
+
+    const userMsg: Message = {
+      id: Date.now().toString(),
+      sender: "user",
+      text: clean,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    };
+
+    setMessages((prev) => [...prev, userMsg]);
+    if (queryToSend === inputQuery) setInputQuery("");
+    setIsTyping(true);
+
+    setTimeout(() => {
+      const respData = generateResponse(clean);
+      const aiMsg: Message = {
+        id: (Date.now() + 1).toString(),
+        sender: "ai",
+        ...respData,
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      };
+      setMessages((prev) => [...prev, aiMsg]);
+      setIsTyping(false);
+    }, 500);
+  };
+
+  const handleCopy = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleClearChat = () => {
+    setMessages(initialMessages);
   };
 
   return (
-    <section id="chart-bot" className="section-padding">
+    <section id="chart-bot" className="section-padding relative">
       <div className="container mx-auto px-6" ref={ref}>
         <div className={`reveal ${isVisible ? "visible" : ""}`}>
-          <div className="flex justify-center mb-3"><span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-mono text-emerald-400">● Online · Portfolio-trained</span></div>
-          <p className="font-mono text-sm text-primary text-center mb-2 tracking-wider">05. PORTFOLIO ASSISTANT</p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center"><span className="text-gradient">Lollipop AI</span></h2>
-          <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-10">Search this portfolio and learn more about Shiva’s background, work, and projects.</p>
+          <div className="flex justify-center mb-3">
+            <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-1.5 text-xs font-dot text-blue-300 tracking-wider flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              LOLLIPOP AI • LIVE PORTFOLIO INTELLIGENCE
+            </span>
+          </div>
+          <p className="font-dot text-xs text-blue-400 text-center mb-2 tracking-widest uppercase">05. AI ASSISTANT</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-center tracking-wider font-dot uppercase">
+            PORTFOLIO <span className="text-gradient">ASSISTANT</span>
+          </h2>
+          <p className="text-slate-400 text-center max-w-2xl mx-auto mb-10 text-sm">
+            Ask questions directly to Lollipop AI for instant insights into Shiva's experience, technical capabilities, and project portfolio.
+          </p>
         </div>
-        <div className={`max-w-3xl mx-auto card-spider rounded-2xl p-5 md:p-8 reveal ${isVisible ? "visible" : ""} reveal-delay-1`}>
-          <form onSubmit={(event) => { event.preventDefault(); search(); }} className="flex flex-col sm:flex-row gap-3">
-            <label htmlFor="shiva-search" className="sr-only">Ask Lollipop AI about Shiva</label>
-            <input id="shiva-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Ask about Shiva, for example: I want Shiva's photo" className="flex-1 rounded-xl border border-border/60 bg-muted/20 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-primary" />
-            <Button type="submit" variant="hero">Search</Button>
-          </form>
-          <div className="flex flex-wrap gap-2 my-5">
-            {suggestions.map((suggestion) => <button key={suggestion} type="button" onClick={() => search(suggestion)} className="rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-mono text-primary transition-colors hover:bg-primary/10">{suggestion}</button>)}
+
+        <div className={`max-w-4xl mx-auto card-pro rounded-2xl border-slate-800/90 bg-slate-950/70 shadow-2xl overflow-hidden reveal ${isVisible ? "visible" : ""} reveal-delay-1`}>
+          {/* Chat Window Header */}
+          <div className="px-6 py-4 border-b border-slate-800/80 bg-slate-900/60 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="relative w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-dot text-xs shadow-md">
+                🤖
+                <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 border-2 border-slate-950 rounded-full" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-white font-dot tracking-wider">LOLLIPOP AI AGENT</h3>
+                <p className="text-[11px] text-blue-400 font-mono">Trained on Shiva's Resume &amp; Portfolio</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleClearChat}
+                className="px-3 py-1.5 text-[11px] font-mono rounded-lg border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-900 transition-colors"
+                title="Reset conversation"
+              >
+                Clear Chat
+              </button>
+            </div>
           </div>
-          <div className="rounded-xl border border-primary/20 bg-primary/5 p-5">
-            <div className="flex items-center justify-between gap-4 mb-3"><p className="font-mono text-xs text-primary">LOLLIPOP AI RESPONSE</p><span className="text-xs text-muted-foreground">Portfolio knowledge</span></div>
-            <h3 className="font-semibold text-foreground mb-2">{answer.title}</h3>
-            <p className="text-secondary-foreground leading-relaxed">{answer.text}</p>
-            {answer.photo && <img src={profilePhoto} alt="Vyza Shiva Kumar Reddy" className="mt-5 h-44 w-36 rounded-xl border border-primary/30 object-cover shadow-lg" />}
-            {answer.action && <a href={answer.action.href} className="inline-flex mt-5 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90">{answer.action.label} →</a>}
+
+          {/* Chat Message Stream */}
+          <div
+            ref={chatContainerRef}
+            className="p-6 h-[380px] overflow-y-auto space-y-5 scrollbar-thin scrollbar-thumb-blue-600 scrollbar-track-slate-950 bg-slate-950/40"
+          >
+            {messages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex gap-3 ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+              >
+                {msg.sender === "ai" && (
+                  <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-sm shrink-0 mt-1">
+                    🤖
+                  </div>
+                )}
+
+                <div
+                  className={`max-w-[85%] sm:max-w-[75%] rounded-2xl p-4 text-sm leading-relaxed ${
+                    msg.sender === "user"
+                      ? "bg-blue-600 text-white rounded-tr-none shadow-lg font-sans"
+                      : "bg-slate-900/90 border border-slate-800 text-slate-200 rounded-tl-none shadow-md"
+                  }`}
+                >
+                  {msg.title && (
+                    <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-slate-800">
+                      <h4 className="font-bold text-blue-300 font-dot tracking-wide text-xs uppercase">{msg.title}</h4>
+                      <span className="text-[10px] text-slate-500 font-mono">{msg.timestamp}</span>
+                    </div>
+                  )}
+
+                  <p className="whitespace-pre-line text-sm">{msg.text}</p>
+
+                  {msg.photo && (
+                    <div className="mt-4 relative inline-block group">
+                      <img
+                        src={profilePhoto}
+                        alt="Vyza Shiva Kumar Reddy"
+                        className="h-44 w-36 rounded-xl border-2 border-blue-500/40 object-cover shadow-xl transition-transform group-hover:scale-105"
+                      />
+                    </div>
+                  )}
+
+                  {msg.tags && msg.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-3 pt-2 border-t border-slate-800/60">
+                      {msg.tags.map((tag) => (
+                        <span key={tag} className="px-2 py-0.5 text-[10px] font-mono rounded-md bg-blue-500/10 text-blue-300 border border-blue-500/20">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {msg.sender === "ai" && (
+                    <div className="mt-3 flex items-center justify-between gap-3 pt-2 border-t border-slate-800/40">
+                      {msg.action ? (
+                        <a
+                          href={msg.action.href}
+                          className="inline-flex items-center gap-1 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors font-mono"
+                        >
+                          {msg.action.label} →
+                        </a>
+                      ) : <div />}
+
+                      <button
+                        onClick={() => handleCopy(msg.text, msg.id)}
+                        className="text-[11px] font-mono text-slate-400 hover:text-blue-300 transition-colors"
+                      >
+                        {copiedId === msg.id ? "✓ Copied!" : "📋 Copy"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {msg.sender === "user" && (
+                  <div className="w-8 h-8 rounded-lg bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center text-xs text-white font-mono shrink-0 mt-1">
+                    YOU
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {isTyping && (
+              <div className="flex gap-3 justify-start items-center">
+                <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-sm shrink-0">
+                  🤖
+                </div>
+                <div className="bg-slate-900/90 border border-slate-800 rounded-2xl rounded-tl-none px-4 py-3 text-xs font-mono text-blue-400 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-blue-400 animate-ping" />
+                  Lollipop AI is thinking...
+                </div>
+              </div>
+            )}
           </div>
-          <div className="mt-5 flex flex-wrap items-center gap-3 text-sm">
-            <a href="tel:+918187032002" className="rounded-lg border border-border/60 px-3 py-2 text-secondary-foreground transition-colors hover:border-primary hover:text-primary">Call: +91 8187032002</a>
-            <a href="mailto:vyza.18@gmail.com" className="rounded-lg border border-border/60 px-3 py-2 text-secondary-foreground transition-colors hover:border-primary hover:text-primary">Email: vyza.18@gmail.com</a>
-            <a href="https://github.com/vyza182-2" target="_blank" rel="noopener noreferrer" className="rounded-lg border border-border/60 px-3 py-2 text-secondary-foreground transition-colors hover:border-primary hover:text-primary">GitHub Profile</a>
+
+          {/* Quick Query Category Suggestions */}
+          <div className="px-6 py-3 border-t border-b border-slate-800/80 bg-slate-900/30">
+            <p className="text-[11px] font-mono text-slate-400 mb-2 uppercase tracking-wider">Suggested Queries:</p>
+            <div className="flex flex-wrap gap-2">
+              {categoryPills.map((pill) => (
+                <button
+                  key={pill.label}
+                  type="button"
+                  onClick={() => handleSend(pill.query)}
+                  className="rounded-full border border-blue-500/20 bg-slate-900 px-3 py-1 text-xs font-mono text-blue-300 transition-all hover:bg-blue-600 hover:text-white hover:border-blue-500 shadow-sm"
+                >
+                  {pill.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Chat Input Bar */}
+          <div className="p-4 bg-slate-900/80">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSend();
+              }}
+              className="flex gap-3"
+            >
+              <input
+                value={inputQuery}
+                onChange={(e) => setInputQuery(e.target.value)}
+                placeholder="Ask Lollipop AI e.g. What projects has Shiva built?"
+                className="flex-1 rounded-xl border border-slate-700/80 bg-slate-950 px-4 py-3 text-sm text-white outline-none transition-colors focus:border-blue-500 font-sans placeholder:text-slate-500"
+              />
+              <Button
+                type="submit"
+                disabled={isTyping || !inputQuery.trim()}
+                className="bg-blue-600 hover:bg-blue-500 text-white font-dot tracking-wider px-6 py-3 rounded-xl shadow-lg border-none disabled:opacity-50"
+              >
+                ASK AI ↵
+              </Button>
+            </form>
           </div>
         </div>
       </div>

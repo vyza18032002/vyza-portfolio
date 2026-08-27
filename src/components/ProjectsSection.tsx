@@ -1,68 +1,106 @@
+import { useState } from "react";
 import useScrollReveal from "@/hooks/useScrollReveal";
 
-const projects = [
+type Project = {
+  id: string;
+  title: string;
+  category: string;
+  desc: string;
+  highlights: string[];
+  tags: string[];
+  gradient: string;
+};
+
+const projects: Project[] = [
   {
-    title: "AI Chart Bot",
-    desc: "Conversational data-analysis assistant that turns natural-language questions into clear visualizations, helping users explore datasets and uncover insights faster.",
-    tags: ["Python", "Generative AI", "Data Visualization", "LLM"],
-    color: "from-primary/10 to-primary/5",
+    id: "proj-1",
+    title: "AI Video Summarizer & Conversational Portal",
+    category: "NLP & Generative AI",
+    desc: "Developed an AI portal integrating YouTube video analysis, automated summarization, and LLM-based conversational interaction. Extracted and processed video transcripts using NLP & Generative AI techniques to generate summaries, key takeaways, and timestamps, with an LLM-driven chat interface for querying content.",
+    highlights: [
+      "Extracted transcripts automatically via YouTube API & Whisper STT models.",
+      "Engineered prompt templates for multi-step chunked LLM summarization.",
+      "Implemented a RAG (Retrieval-Augmented Generation) pipeline for querying video topics.",
+      "Built interactive timestamps for direct video section navigation."
+    ],
+    tags: ["Python", "NLP", "Generative AI", "LLMs", "YouTube API", "Transcript Processing"],
+    gradient: "from-blue-600/20 via-indigo-600/10 to-transparent",
   },
   {
-    title: "Customer Churn Prediction",
-    desc: "Built a predictive model using Logistic Regression & Random Forest achieving 82% accuracy to identify at-risk customers.",
-    tags: ["Python", "Scikit-learn", "Pandas", "ML"],
-    color: "from-primary/10 to-primary/5",
+    id: "proj-2",
+    title: "AI-Powered Voice Calling Agent",
+    category: "Speech AI & Telephony",
+    desc: "Developed an AI-powered voice calling agent enabling natural real-time conversations using Speech-to-Text (STT), Text-to-Speech (TTS), and LLMs. Implemented LangChain for prompt management and integrated telephony APIs for conversational flow.",
+    highlights: [
+      "Integrated STT & TTS engines for ultra-low latency bi-directional audio streaming.",
+      "Configured LangChain prompt orchestration for dynamic context maintenance.",
+      "Connected telephony APIs to automate voice calls and handle inbound inquiries.",
+      "Implemented fallback intent detection for robust conversational flows."
+    ],
+    tags: ["Python", "LangChain", "STT / TTS", "LLMs", "Telephony API", "Conversational AI"],
+    gradient: "from-purple-600/20 via-blue-600/10 to-transparent",
   },
   {
-    title: "YouTube Summarizer",
-    desc: "Flask app powered by Gemini API for NLP-based transcript extraction and intelligent video summarization.",
-    tags: ["Flask", "Gemini API", "NLP", "Python"],
-    color: "from-primary/10 to-transparent",
-  },
-  {
-    title: "Malware Detection System",
-    desc: "ML classifier using SVM & Random Forest to detect malicious Android APKs with high precision.",
-    tags: ["SVM", "Random Forest", "Security", "ML"],
-    color: "from-transparent to-primary/10",
-  },
-  {
-    title: "LMS Portal",
-    desc: "Learning Management System built with Django and Gemini API featuring automated video analysis & summarization.",
-    tags: ["Django", "Gemini API", "Full Stack", "AI"],
-    color: "from-primary/5 to-primary/10",
+    id: "proj-3",
+    title: "Android Malware Detection System",
+    category: "Machine Learning & Cyber Security",
+    desc: "Developed a framework for detecting malware in reverse-engineered Android applications using machine learning algorithms to address mobile security threats. Applied feature extraction and ML classifiers to accurately identify malicious APKs.",
+    highlights: [
+      "Reverse-engineered Android APKs to extract static intent permissions & API call logs.",
+      "Trained Random Forest, SVM, and XGBoost classifiers with Scikit-learn.",
+      "Achieved high precision and recall on real-world malware datasets.",
+      "Documented feature importance analysis for threat signature detection."
+    ],
+    tags: ["Python", "Machine Learning", "Scikit-learn", "Android Reverse Eng", "Security"],
+    gradient: "from-cyan-600/20 via-blue-600/10 to-transparent",
   },
 ];
 
 const ProjectsSection = () => {
   const { ref, isVisible } = useScrollReveal();
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
 
   return (
-    <section id="projects" className="section-padding bg-muted/10">
+    <section id="projects" className="section-padding bg-slate-950/40 relative">
       <div className="container mx-auto px-6" ref={ref}>
         <div className={`reveal ${isVisible ? "visible" : ""}`}>
-          <p className="font-mono text-sm text-primary text-center mb-2 tracking-wider">04. Projects</p>
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-            What I've <span className="text-gradient">Built</span>
+          <p className="font-dot text-xs text-blue-400 text-center mb-2 tracking-widest uppercase">04. PORTFOLIO</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-center tracking-wider font-dot uppercase">
+            FEATURED <span className="text-gradient">PROJECTS</span>
           </h2>
+          <p className="text-slate-400 text-center max-w-2xl mx-auto mb-12 text-sm">
+            Click on any project card to inspect full system architecture highlights and engineering details.
+          </p>
         </div>
-        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+
+        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {projects.map((p, i) => (
-            <div key={p.title} className={`reveal ${isVisible ? "visible" : ""} reveal-delay-${i + 1}`}>
-              <div className="card-spider-hover rounded-2xl p-6 h-full group relative overflow-hidden">
-                <div className={`absolute inset-0 bg-gradient-to-br ${p.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+            <div key={p.id} className={`reveal ${isVisible ? "visible" : ""} reveal-delay-${i + 1}`}>
+              <div
+                onClick={() => setActiveProject(p)}
+                className="card-pro-hover rounded-2xl p-6 h-full border-slate-800/80 bg-slate-900/40 flex flex-col justify-between group relative overflow-hidden cursor-pointer"
+              >
+                <div className={`absolute inset-0 bg-gradient-to-br ${p.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
                 <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg font-semibold text-foreground">{p.title}</h3>
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <span className="px-2.5 py-1 text-[10px] font-mono rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20 font-semibold uppercase">
+                      {p.category}
+                    </span>
+                    <span className="text-slate-500 group-hover:text-blue-400 text-xs font-mono transition-colors">
+                      Details ↗
+                    </span>
                   </div>
-                  <p className="text-secondary-foreground text-sm mb-5 leading-relaxed">{p.desc}</p>
-                  <div className="flex flex-wrap gap-2">
+
+                  <h3 className="text-base font-bold text-white leading-snug mb-3 group-hover:text-blue-300 transition-colors">
+                    {p.title}
+                  </h3>
+                  <p className="text-slate-300 text-sm mb-6 leading-relaxed line-clamp-4">{p.desc}</p>
+                </div>
+
+                <div className="relative z-10 pt-4 border-t border-slate-800/80">
+                  <div className="flex flex-wrap gap-1.5">
                     {p.tags.map((t) => (
-                      <span key={t} className="px-2.5 py-1 text-xs rounded-md bg-primary/10 text-primary font-mono border border-primary/10">
+                      <span key={t} className="px-2.5 py-1 text-[11px] font-mono rounded-md bg-blue-500/10 text-blue-300 border border-blue-500/20">
                         {t}
                       </span>
                     ))}
@@ -72,6 +110,61 @@ const ProjectsSection = () => {
             </div>
           ))}
         </div>
+
+        {/* Project Detail Modal */}
+        {activeProject && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
+            <div className="relative max-w-2xl w-full rounded-2xl border border-blue-500/30 bg-slate-900 p-6 md:p-8 shadow-2xl space-y-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <span className="px-3 py-1 text-xs font-mono rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20 font-semibold uppercase">
+                    {activeProject.category}
+                  </span>
+                  <h3 className="text-xl md:text-2xl font-bold text-white font-dot tracking-wide mt-2">
+                    {activeProject.title}
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setActiveProject(null)}
+                  className="w-8 h-8 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-sm font-bold transition-colors"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <p className="text-slate-300 text-sm leading-relaxed">{activeProject.desc}</p>
+
+              <div>
+                <h4 className="text-xs font-dot text-blue-400 font-bold uppercase tracking-wider mb-3">
+                  Technical Architecture &amp; Key Highlights
+                </h4>
+                <ul className="space-y-2">
+                  {activeProject.highlights.map((item) => (
+                    <li key={item} className="text-xs text-slate-300 flex items-start gap-2 leading-relaxed">
+                      <span className="text-blue-400 font-bold">✓</span> {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                <div className="flex flex-wrap gap-1.5">
+                  {activeProject.tags.map((t) => (
+                    <span key={t} className="px-2.5 py-1 text-[11px] font-mono rounded-md bg-blue-500/10 text-blue-300 border border-blue-500/20">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <button
+                  onClick={() => setActiveProject(null)}
+                  className="px-4 py-2 text-xs font-dot bg-blue-600 hover:bg-blue-500 text-white rounded-xl transition-colors"
+                >
+                  CLOSE PREVIEW
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

@@ -6,7 +6,7 @@ const navLinks = [
   { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
-  { label: "Lollipop AI", href: "#chart-bot" },
+  { label: "AI Assistant", href: "#chart-bot" },
   { label: "Education", href: "#education" },
   { label: "Contact", href: "#contact" },
 ];
@@ -33,46 +33,49 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/90 backdrop-blur-xl border-b border-border/50 shadow-lg shadow-background/50" : ""}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/80 shadow-2xl" : "bg-transparent"}`}>
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
-        <a href="#" className="text-sm font-mono text-primary tracking-wider">VSKR</a>
+        <a href="#" className="text-base font-dot text-blue-400 font-bold tracking-widest flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse" />
+          VSKR
+        </a>
         <div className="hidden md:flex items-center gap-1">
           {navLinks.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className={`px-3 py-2 text-sm rounded-lg transition-all duration-300 ${
+              className={`px-3 py-1.5 text-xs font-mono rounded-lg transition-all duration-200 ${
                 activeSection === l.href.slice(1)
-                  ? "text-primary bg-primary/10"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
+                  ? "text-blue-300 bg-blue-500/10 border border-blue-500/20 font-semibold"
+                  : "text-slate-400 hover:text-white hover:bg-slate-900/60"
               }`}
             >
               {l.label}
             </a>
           ))}
-          <Button variant="hero" size="sm" className="ml-3" asChild>
+          <Button variant="hero" size="sm" className="ml-3 bg-blue-600 hover:bg-blue-500 text-white font-dot text-xs tracking-wider border-none shadow-md" asChild>
             <a href="https://docs.google.com/document/d/11_9UII4rn396nlSORc9rU6TNAXm4M8Bw/edit" target="_blank" rel="noopener noreferrer">
-              Resume
+              RESUME ↗
             </a>
           </Button>
         </div>
-        <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-foreground p-2 rounded-lg hover:bg-muted/30 transition-colors">
+        <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-slate-300 p-2 rounded-lg hover:bg-slate-800 transition-colors">
           <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
             {mobileOpen ? <path d="M6 18L18 6M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
           </svg>
         </button>
       </div>
-      <div className={`md:hidden overflow-hidden transition-all duration-300 ${mobileOpen ? "max-h-96 border-b border-border/50" : "max-h-0"}`}>
-        <div className="bg-background/95 backdrop-blur-xl px-6 pb-4 space-y-1">
+      <div className={`md:hidden overflow-hidden transition-all duration-300 ${mobileOpen ? "max-h-96 border-b border-slate-800 bg-slate-950/95 backdrop-blur-xl" : "max-h-0"}`}>
+        <div className="px-6 pb-4 pt-2 space-y-1">
           {navLinks.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={() => setMobileOpen(false)}
-              className={`block py-2.5 px-3 text-sm rounded-lg transition-all ${
+              className={`block py-2 px-3 text-xs font-mono rounded-lg transition-all ${
                 activeSection === l.href.slice(1)
-                  ? "text-primary bg-primary/10"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
+                  ? "text-blue-300 bg-blue-500/10 font-semibold"
+                  : "text-slate-400 hover:text-white hover:bg-slate-900"
               }`}
             >
               {l.label}

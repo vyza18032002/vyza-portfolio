@@ -8,11 +8,10 @@ import AIChartBotSection from "@/components/AIChartBotSection";
 import EducationSection from "@/components/EducationSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import ScrollSpiderMan from "@/components/ScrollSpiderMan";
+import FloatingAIAssistant from "@/components/FloatingAIAssistant";
 
 const Index = () => (
-  <div className="min-h-screen bg-background spider-web-pattern">
-    <ScrollSpiderMan />
+  <div className="min-h-screen bg-background text-foreground tech-grid-pattern overflow-hidden relative">
     <Navbar />
     <HeroSection />
     <AboutSection />
@@ -23,6 +22,7 @@ const Index = () => (
     <EducationSection />
     <ContactSection />
     <Footer />
+    <FloatingAIAssistant />
   </div>
 );
 
